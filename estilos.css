@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #dedede;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+/* ====================== CONTENEDOR ========================== */
+.gameboard {
+    height: 100vh;
+    width: 100vh;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    background-color: aqua;
+    max-height: 65vh;
+    max-width: 65vh;
+}
+
+/* =================== CAJAS ===================== */
+.color {
+    width: 50%;
+    height: 50%;
+    display: inline-block;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: left;
+}
+
+.celeste {
+    background-color: #22a6b3;
+}
+.celeste.light {
+    background-color: #7ed6df;
+}
+
+.violeta {
+    background-color: #be3edd;
+}
+.violeta.light {
+    background-color: #e056fd;
+}
+
+.naranja {
+    background-color: #f0932b;
+}
+.naranja.light {
+    background-color: #ffbe76;
+}
+
+.verde {
+    background-color: #6ab04c;
+}
+.verde.light {
+    background-color: #badc58;
+}
+
+/* ================= BOTON =================== */
+
+.btn-start {
+    
+}
