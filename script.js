@@ -15,6 +15,8 @@ class Juego {
         this.siguienteNivel()
     }
     inicializar() {
+        // --- con esto hacemos que el evento del click de los botones ya lleve el .bind(this)
+        this.elegirColor = this.elegirColor.bind(this)
         // --- aca ya con el boton, le vamos a decir que se oculte, el hide esta en el estilos.css
         btnEmpezar.classList.add('hide');        
         // --- aca le decimos que inicie en el level 1, ya que nuestro juego tendra 10 niveles.
@@ -35,6 +37,7 @@ class Juego {
 
     siguienteNivel() {
         this.iluminarSecuencia()
+        this.agregarEventosClick()
     }
 
     transformaNumeroAColor(numero){
@@ -73,6 +76,22 @@ class Juego {
     apagarColor(color) {
         this.colores[color].classList.remove('light')
     }
+
+    agregarEventosClick() {
+        // --- aca capturamos todos los eventos al hacer click sobre cada color
+        this.colores.celeste.addEventListener('click', this.elegirColor)
+        this.colores.violeta.addEventListener('click', this.elegirColor)
+        this.colores.naranja.addEventListener('click', this.elegirColor)
+        this.colores.verde.addEventListener('click', this.elegirColor)
+    }
+
+    elegirColor(ev) {
+
+    }
+
+
+
+
 };
 
 // --- definimos la funcion onclick del boton
