@@ -7,18 +7,24 @@ const verde = document.getElementById('verde');
 // --- aca obtenemos el boton del html
 const btnEmpezar = document.getElementById('btnEmpezar');
 
+// --- una variable que guarde el ultimo nivel
+const ULTIMO_NIVEL = 10;
+
 // --- la clase juego, que tendra toda la logica de nuestro juego
 class Juego {
     constructor() {
         this.inicializar()
         this.generarSecuencia()
-        this.siguienteNivel()
+        setTimeout(this.siguienteNivel, 500)
+        
     }
     inicializar() {
         // --- con esto hacemos que el evento del click de los botones ya lleve el .bind(this)
         this.elegirColor = this.elegirColor.bind(this)
+        this.siguienteNivel = this.siguienteNivel.bind(this)
+        this.toggleBtnEmpezar()
         // --- aca ya con el boton, le vamos a decir que se oculte, el hide esta en el estilos.css
-        btnEmpezar.classList.add('hide');        
+        // btnEmpezar.classList.add('hide');        
         // --- aca le decimos que inicie en el level 1, ya que nuestro juego tendra 10 niveles.
         this.nivel = 1;
         this.colores ={
@@ -29,6 +35,14 @@ class Juego {
         }
     }
 
+    toggleBtnEmpezar() {
+        if (btnEmpezar.classList.contains('hide')) {
+            btnEmpezar.classList.remove('hide')
+        } else {
+            btnEmpezar.classList.add('hide');        
+        }
+    }
+
     generarSecuencia() {
         // --- con .fill le decimos que los 10 items del array tengan un valor (cero)
         // --- Math.floor no pasa los numeros decimales que arroja el Math.random, a numeros enteros.
@@ -36,8 +50,9 @@ class Juego {
     }
 
     siguienteNivel() {
-        this.iluminarSecuencia()
-        this.agregarEventosClick()
+        this.subnivel = 0;
+        this.iluminarSecuencia();
+        this.agregarEventosClick();
     }
 
     transformaNumeroAColor(numero){
@@ -51,6 +66,20 @@ class Juego {
                 return 'naranja';
             case 3: 
                 return 'verde'
+        }
+    }
+
+    transformarColorANumero(color){
+        // --- aca convertimos el color a un numero
+        switch (color) {
+            case 'celeste':
+                return 0;
+            case 'violeta':
+                return 1;
+            case 'naranja':
+                return 2;
+            case 'verde': 
+                return 3
         }
     }
 
@@ -85,10 +114,51 @@ class Juego {
         this.colores.verde.addEventListener('click', this.elegirColor)
     }
 
-    elegirColor(ev) {
-
+    eliminarEventosClick() {
+        
+        this.colores.celeste.removeEventListener('click', this.elegirColor)
+        this.colores.violeta.removeEventListener('click', this.elegirColor)
+        this.colores.naranja.removeEventListener('click', this.elegirColor)
+        this.colores.verde.removeEventListener('click', this.elegirColor)
     }
 
+    elegirColor(ev) {
+        // --- aca creamos toda la logica en donde le decimos que gano o perdio
+        // --- capturamos e dataset de cada color que se presiono
+        const nombreColor = ev.target.dataset.color;
+        const numeroColor = this.transformarColorANumero(nombreColor);
+        this.iluminarColor(nombreColor);
+        if (numeroColor === this.secuencia[this.subnivel]){
+            this.subnivel++
+            if(this.subnivel === this.nivel){
+                this.nivel++
+                this.eliminarEventosClick()
+                if (this.nivel === (ULTIMO_NIVEL + 1)){
+                    // GANO
+                    this.ganoElJuego()
+                }else {
+                    setTimeout(this.siguienteNivel, 1500)
+                }
+            }
+        }else {
+            // PERDIO
+            this.perdioElJuego()
+        }
+    }
+    
+    ganoElJuego() {
+        swal ('Platzi','Felicitaciones, Ganaste el juego!', 'success')
+        .then( () => {
+            this.inicializar.bind(this)
+        })
+    }
+
+    perdioElJuego() {
+        swal ('Platzi','Lo lamentamos, perdiste :(', 'error')
+        .then( () => {
+            this.eliminarEventosClick()
+        })
+    }
 
 
 
